@@ -53,13 +53,13 @@ have a GDD threshold (minimum and maximum). When the accumulated GDDs are betwee
 
 To calculate growing degree days, the temperature is taken throughout the day. From this, the average temperature for the day is recorded. The baseline temperature is deducted from the average temperature, and if this value is above 0, it is added to the accumulated GDDs of that crop. To calculate how close the crops are to harvest (as a percentage), the accumulated GDDs are divided by the minimum required GDDs and multiplied by 100. When the crop reaches 100%, it should be ready to harvest.
 
-<center>
+<p align="center">
 
 | <p align="center"><img src="./Images/GDD_Explained.jpg" width="70%"/></p> |
 | --- |
 | <p align="center"> *Graph showing the temperature curve and upper and lower thresholds. The degree days are determined by calculating the area of the shaded sections [1]* </p> |
 
-</center>
+</p>
 
 *GDDs can also be calculated through integration but the method described above is a simple way to approximate the area under the temperature curve.*
 
@@ -82,13 +82,13 @@ The end device node comprises of An Arduino MKR 1310 connected to a temperature 
 These readings are also sent as a 5-byte payload (containing a flag, temperature
 reading and humidity reading) to The Things Network via a LoRaWAN gateway with over-the-air authentication (OTAA). The payload is interpreted by a payload formatter which converts the bytes into their respective values (payloadType, temperature and humidity). The formatted payload is sent to the Node-RED flowchart via the MQTT protocol.
 
-<center>
+<p align="center">
 
 | <p align="center"><img src="./Images/Decoded_Payload.png" /></p> |
 | --- |
 | <p align="center"> *Decoded payload in Node-RED* </p> |
 
-</center>
+</p>
 
 In Node-RED, if the payload type is “Temp&Humid”, the temperature and humidity readings are displayed on gauges on the dashboard’s home page. The temperature reading is stored in the “temperatureReadings” SQL table. 
 
@@ -141,7 +141,7 @@ For detailed instructions on setting up the Harvest Predictor, please refer to t
 
 ## <a name='Demonstration'></a>Demonstration
 
-[<img src="./Images/YouTube_Demo_Screenshot.png" alt="Demo Video" />](https://www.youtube.com/watch?v=MhM2F3PmK1o&ab_channel=SeanPrice)
+[<img src="./Images/YouTube_Demo_Screenshot.png" />](https://youtu.be/MhM2F3PmK1o?si=OtK0RPwDWsCE3E0s)
 
 ## <a name='FurtherWork'></a>Further Work
 
