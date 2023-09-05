@@ -53,10 +53,13 @@ have a GDD threshold (minimum and maximum). When the accumulated GDDs are betwee
 
 To calculate growing degree days, the temperature is taken throughout the day. From this, the average temperature for the day is recorded. The baseline temperature is deducted from the average temperature, and if this value is above 0, it is added to the accumulated GDDs of that crop. To calculate how close the crops are to harvest (as a percentage), the accumulated GDDs are divided by the minimum required GDDs and multiplied by 100. When the crop reaches 100%, it should be ready to harvest.
 
-<figure align="center">
-  <img src="./Images/GDD_Explained.jpg" />
-  <figcaption>Graph showing the temperature curve and upper and lower thresholds. The degree days are determined by calculating the area of the shaded sections [1]</figcaption>
-</figure>
+<center>
+
+| <p align="center"><img src="./Images/GDD_Explained.jpg" width="70%"/></p> |
+| --- |
+| <p align="center"> *Graph showing the temperature curve and upper and lower thresholds. The degree days are determined by calculating the area of the shaded sections [1]* </p> |
+
+</center>
 
 *GDDs can also be calculated through integration but the method described above is a simple way to approximate the area under the temperature curve.*
 
@@ -64,69 +67,73 @@ To calculate growing degree days, the temperature is taken throughout the day. F
 
 ### <a name='Infographic'></a>Infographic
 
-<figure align="center">
+<p align="center">
   <img src="./Images/Infographic.jpg" />
-</figure>
+</p>
 
 ### <a name='DetailedExplanation'></a>Detailed Explanation
 
 The end device node comprises of An Arduino MKR 1310 connected to a temperature and humidity sensor, relay (watering system) and LCD. This device measures the temperature and humidity before displaying the readings on the LCD.
 
-<figure align="center">
+<p align="center">
   <img src="./Images/Arduino_IoT_Device.png" />
-</figure>
+</p>
 
 These readings are also sent as a 5-byte payload (containing a flag, temperature
 reading and humidity reading) to The Things Network via a LoRaWAN gateway with over-the-air authentication (OTAA). The payload is interpreted by a payload formatter which converts the bytes into their respective values (payloadType, temperature and humidity). The formatted payload is sent to the Node-RED flowchart via the MQTT protocol.
 
-<figure align="center">
-  <img src="./Images/Decoded_Payload.png" />
-  <figcaption>Decoded payload in Node-RED</figcaption>
-</figure>
+<center>
+
+| <p align="center"><img src="./Images/Decoded_Payload.png" /></p> |
+| --- |
+| <p align="center"> *Decoded payload in Node-RED* </p> |
+
+</center>
 
 In Node-RED, if the payload type is “Temp&Humid”, the temperature and humidity readings are displayed on gauges on the dashboard’s home page. The temperature reading is stored in the “temperatureReadings” SQL table. 
 
-| <figure align="center"> <img src="./Images/Temp_&_Humid_Gauges.png" /><figcaption>Temperature and Humidity gauges on the dashboard</figcaption></figure> | <figure align="center"> <img src="./Images/temperatureReadings_DB.png" /><figcaption>"temperatureReadings" SQL table</figcaption></figure> |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| <p align="center"> <img src="./Images/Temp_&_Humid_Gauges.png" /></p> | <p align="center"> <img src="./Images/temperatureReadings_DB.png" /></p> |
+| --- | --- |
+| <p align="center"> *Temperature and Humidity gauges on the dashboard* </p> | <p align="center"> *"temperatureReadings" SQL table* </p> |
 
 When the farmer plants a new crop, they can go to the “Add Crop” page on the dashboard. Here they can enter the name of the crop, the date and time it was planted, the baseline temperature, minimum GDD and maximum GDD. When they click submit, the information is added to the “crops” database.
 
-| <figure align="center"> <img src="./Images/Add_Crop_Form.png" /><figcaption>Add Crop Form</figcaption></figure> | <figure align="center"> <img src="./Images/crops_DB.png" /><figcaption>"crops" SQL table</figcaption></figure> |
-| --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| <p align="center"> <img src="./Images/Add_Crop_Form.png" /></p> | <p align="center"> <img src="./Images/crops_DB.png" /></p> |
+| --- | --- |
+| <p align="center"> *Add Crop Form* </p> | <p align="center"> *"crops" SQL table* </p> |
 
 Every hour (or when the user clicks the “Update” button on the “Monitor Crops” page), a flow is triggered. The temperature readings for the day are retrieved from the “temperatureReadings” SQL table. From this, the average temperature is calculated and stored in the “averageTemperatures” table. The date column of the table is a primary key, so if there is already an entry for today’s date, the entry will be updated rather than a new entry being created. This ensures that there is only one entry per day.
 
-| <figure align="center"> <img src="./Images/Calculate_Average_Temp.png" /><figcaption>Code to calculate average temperature</figcaption></figure> | <figure align="center"> <img src="./Images/averageTemperatures_DB.png" /><figcaption>"averageTemperatures" SQL table</figcaption></figure> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| <p align="center"> <img src="./Images/Calculate_Average_Temp.png" /></p> | <p align="center"> <img src="./Images/averageTemperatures_DB.png" /></p> |
+| --- | --- |
+| <p align="center"> *Code to calculate average temperature* </p> | <p align="center"> *averageTemperatures" SQL table* </p> |
+
 
 After a short delay, the crop data and average temperatures are retrieved from their respective tables. The degree days and harvest percentages are calculated for each crop before the “crops” table is updated with these new values.
 
-<figure align="center">
-  <img src="./Images/Calculate_GDD_&_Harverst_Percent.png" />
-  <figcaption>Code to calculate the degree days and harvest percentage for each crop</figcaption>
-</figure>
+| <p align="center"><img src="./Images/Calculate_GDD_&_Harverst_Percent.png" /></p> |
+| --- |
+| <p align="center"> *Code to calculate the degree days and harvest percentage for each crop* </p> |
 
 After another short delay, the updated crops data is retrieved from the table before being reformatted and displayed for the user to see on the “Monitor Crops” page of the dashboard.
 
-<figure align="center">
-  <img src="./Images/Crops_Table.png" />
-  <figcaption>Crops table on the “Monitor Crops” page of the dashboard</figcaption>
-</figure>
+| <p align="center"><img src="./Images/Crops_Table.png" /><figcaption></figcaption></p> | 
+| --- |
+| <p align="center"> *Crops table on the “Monitor Crops” page of the dashboard* </p> |
 
 To automate the watering process, a watering system has been implemented. If the humidity is below 50% or the user clicks the “Watering System” switch on the dashboard home page, a “1” is sent downlink to the Arduino. The Arduino checks for downlink communications every 2 minutes, and if a “1” is received, the watering system relay is switched on, and the LCD backlight goes blue. 
 
-<figure align="center">
-  <img src="./Images/Watering_System_On.png" />
-  <figcaption>Arduino IoT device with the watering system relay on and blue LCD backlight</figcaption>
-</figure>
+| <p align="center"><img src="./Images/Watering_System_On.png" /></p> |
+| --- |
+| <p align="center"> *Arduino IoT device with the watering system relay on and blue LCD backlight* </p> |
 
 The relay status is returned to TTN with the payload type flag set to 1. After a 2-minute delay, Node-RED sends a “0” to the Arduino, and this causes the Arduino to turn off the watering system via the relay and change the LCD backlight back to yellow.
 
 ### <a name='Node-REDFlow'></a>Node-RED Flow
 
-<figure align="center">
+<p align="center">
   <img src="./Images/Node-RED_Flow.png" />
-</figure>
+</p>
 
 ## <a name='SetupGuide'></a>Setup Guide
 
@@ -134,7 +141,7 @@ For detailed instructions on setting up the Harvest Predictor, please refer to t
 
 ## <a name='Demonstration'></a>Demonstration
 
-[<img src="./Images/YouTube_Demo_Screenshot.png" alt="Demo Video" />](https://youtu.be/MhM2F3PmK1o "Demo Video")
+[<img src="./Images/YouTube_Demo_Screenshot.png" alt="Demo Video" />](https://www.youtube.com/watch?v=MhM2F3PmK1o&ab_channel=SeanPrice)
 
 ## <a name='FurtherWork'></a>Further Work
 
