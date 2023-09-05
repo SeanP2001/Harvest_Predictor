@@ -1,0 +1,1391 @@
+[
+    {
+        "id": "589bf60c6071c122",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "62b892f7e42bdec0",
+        "type": "mqtt in",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "topic": "v3/+/devices/+/up",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "ddc2d83757452bb6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "07060bc2c89e0af3",
+                "b60b32599d7c1258",
+                "43f85cb116a99125",
+                "27faf0e1347b5e9f"
+            ]
+        ]
+    },
+    {
+        "id": "07060bc2c89e0af3",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "b60b32599d7c1258",
+        "type": "change",
+        "z": "589bf60c6071c122",
+        "name": "Temperature",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.uplink_message.decoded_payload.temperature",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 180,
+        "wires": [
+            [
+                "779041ff0199e654",
+                "f49822d646b05237",
+                "e50675d5d814095f"
+            ]
+        ]
+    },
+    {
+        "id": "779041ff0199e654",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Temperature",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 570,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f49822d646b05237",
+        "type": "ui_gauge",
+        "z": "589bf60c6071c122",
+        "name": "Temperature",
+        "group": "98271c4b21a473a4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": "40",
+        "colors": [
+            "#0077b3",
+            "#ffffff",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 570,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "01a07cd2ebc22cbf",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "base64 encoding",
+        "func": "return {\n    \"payload\": {\n        \"downlinks\": [{\n            \"f_port\": 1,\n            \"frm_payload\": msg.payload.toString(\"base64\"),\n            \"priority\": \"NORMAL\"\n        }]\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 1260,
+        "wires": [
+            [
+                "a2e981720fa84f3a",
+                "8185d5f85ebb1def"
+            ]
+        ]
+    },
+    {
+        "id": "a2e981720fa84f3a",
+        "type": "mqtt out",
+        "z": "589bf60c6071c122",
+        "name": "TTN-MQTT-out",
+        "topic": "v3/iot-lab3-seanp@ttn/devices/mkr1310-test1/down/push",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ddc2d83757452bb6",
+        "x": 900,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "9c927e819ceba680",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Relay Switch",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "8b8d9d2f66b70760",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Database Out",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "1f8598c20efca973",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Store Temp Reading",
+        "x": 800,
+        "y": 120,
+        "wires": [
+            [
+                "8b8d9d2f66b70760"
+            ]
+        ]
+    },
+    {
+        "id": "43f85cb116a99125",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "if (msg.payload.uplink_message.decoded_payload.payloadType == \"Temp&Humid\")\n{\n    msg.topic = \"INSERT INTO temperatureReadings (Date, Time, Device_ID, Temperature) VALUES (CURRENT_DATE, CURRENT_TIMESTAMP, '\" + msg.payload.end_device_ids.dev_eui + \"', '\" + msg.payload.uplink_message.decoded_payload.temperature+\"');\"\n\n    return msg; \n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 120,
+        "wires": [
+            [
+                "1f8598c20efca973",
+                "2d431cd89f933c98"
+            ]
+        ]
+    },
+    {
+        "id": "2d431cd89f933c98",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "SQL Out",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "a519ec3b37c8f8a0",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Get Today's Readings",
+        "x": 740,
+        "y": 360,
+        "wires": [
+            [
+                "435cab1f722b6679",
+                "e26b6ec698575ddf"
+            ]
+        ]
+    },
+    {
+        "id": "435cab1f722b6679",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Get Readings",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e26b6ec698575ddf",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "Calculate Today's Average",
+        "func": "var total = 0;\nvar length = msg.payload.length;\n\nif (length !=0)\n{\n    for (let i = 0; i < length; i++) {\n        total += msg.payload[i].Temperature;\n    }\n\n    msg.payload = {};\n\n    msg.payload.total = total;\n    msg.payload.noOfReadings = length;\n    msg.payload.average = total / length;\n\n    return msg;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 360,
+        "wires": [
+            [
+                "f7e83464a6300fb2",
+                "35d8549ae1d1672e"
+            ]
+        ]
+    },
+    {
+        "id": "f7e83464a6300fb2",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Get Average",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1270,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "35d8549ae1d1672e",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "\nmsg.topic = \"INSERT INTO averageTemperatures (date, averageTemperature) VALUES (CURRENT_DATE,'\" + msg.payload.average + \"') ON DUPLICATE KEY UPDATE averageTemperature=VALUES(averageTemperature);\"\n\nreturn msg;\n\n\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 360,
+        "wires": [
+            [
+                "6e47061bb94c6e0e",
+                "e57002f6d9edefd7"
+            ]
+        ]
+    },
+    {
+        "id": "6e47061bb94c6e0e",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Store Avr Temp",
+        "x": 1440,
+        "y": 360,
+        "wires": [
+            [
+                "2b3af6e58981b657"
+            ]
+        ]
+    },
+    {
+        "id": "eee17bad387d506c",
+        "type": "inject",
+        "z": "589bf60c6071c122",
+        "name": "Every Hour",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 0-23 * * *",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 110,
+        "y": 360,
+        "wires": [
+            [
+                "9e06bc65dc28f763",
+                "5e8d845f6e0e0afc"
+            ]
+        ]
+    },
+    {
+        "id": "1f33facc71defd10",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "SQL Command",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "e57002f6d9edefd7",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Insert Average SQL Command",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "2b3af6e58981b657",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Avr Temp Database Output",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1720,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "3be59239389521a4",
+        "type": "ui_form",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "label": "",
+        "group": "fddeda23f38bd5a5",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Crop Name",
+                "value": "cropName",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Date Planted",
+                "value": "datePlanted",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Time Planted",
+                "value": "timePlanted",
+                "type": "time",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Baseline Temperature (°C)",
+                "value": "baselineTemp",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Minimum Required GDD",
+                "value": "harvestStartGDD",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Maximum Required GDD",
+                "value": "harvestEndGDD",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "cropName": "",
+            "datePlanted": "",
+            "timePlanted": "",
+            "baselineTemp": "",
+            "harvestStartGDD": "",
+            "harvestEndGDD": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 110,
+        "y": 1100,
+        "wires": [
+            [
+                "7fa1a97384a7847e",
+                "c3b40b1502532bfe"
+            ]
+        ]
+    },
+    {
+        "id": "7fa1a97384a7847e",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "FormOutput",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 250,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "c3b40b1502532bfe",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "\n// Format date as YYYY-MM-DD\nconst formattedDate = msg.payload[\"datePlanted\"].toString().slice(0, 10);\n\n// Format time as HH:MM:SS\nconst formattedTime = msg.payload[\"timePlanted\"].toString().slice(11, 19);\n\nmsg.topic = \"INSERT INTO crops (cropName, datePlanted, timePlanted, baselineTemp, harvestStartGDD, harvestEndGDD) VALUES ('\" + msg.payload[\"cropName\"] + \"','\" + formattedDate + \"','\" + formattedTime + \"','\" + msg.payload[\"baselineTemp\"] + \"','\" + msg.payload[\"harvestStartGDD\"] + \"','\" + msg.payload[\"harvestEndGDD\"] + \"');\"\n\nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 1100,
+        "wires": [
+            [
+                "2f444558c6a9373f",
+                "21e7ace5773e6c36"
+            ]
+        ]
+    },
+    {
+        "id": "2f444558c6a9373f",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "crops_database",
+        "x": 440,
+        "y": 1100,
+        "wires": [
+            [
+                "e61bdd22cf9afc74"
+            ]
+        ]
+    },
+    {
+        "id": "e61bdd22cf9afc74",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Database Out",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "21e7ace5773e6c36",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "SQL_Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "9e06bc65dc28f763",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "var nowDate = new Date();\nvar today = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();\nvar tomorrow = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + (nowDate.getDate()+1);\n\nmsg.topic = \"select Temperature from temperatureReadings WHERE Date BETWEEN '\" + today + \"' AND '\" + tomorrow + \"';\"\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 360,
+        "wires": [
+            [
+                "a519ec3b37c8f8a0",
+                "1f33facc71defd10"
+            ]
+        ]
+    },
+    {
+        "id": "a27f6424ed7c5c30",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "msg.topic = \"select * from crops;\"\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 420,
+        "wires": [
+            [
+                "01d4797a095a4981"
+            ]
+        ]
+    },
+    {
+        "id": "01d4797a095a4981",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Get Crops Data",
+        "x": 720,
+        "y": 420,
+        "wires": [
+            [
+                "6b221c03d6de89c0",
+                "84aa5bde686ce070"
+            ]
+        ]
+    },
+    {
+        "id": "ca8159726c7c76dc",
+        "type": "ui_button",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "group": "7d54d0822a46d1ae",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Update",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 420,
+        "wires": [
+            [
+                "9e06bc65dc28f763",
+                "5e8d845f6e0e0afc"
+            ]
+        ]
+    },
+    {
+        "id": "84aa5bde686ce070",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "var nowDate = new Date();\nvar today = nowDate.getFullYear() + '-' + (nowDate.getMonth() + 1) + '-' + nowDate.getDate();\n\n// msg.topic = \"\";\n\nfor (let i = 0; i < msg.payload.length; i++) {\n\n    msg.payload[i].datePlanted = msg.payload[i].datePlanted.toISOString().slice(0, 10);\n\n    msg.topic += \"select averageTemperature from averageTemperatures WHERE Date BETWEEN '\" + msg.payload[i].datePlanted + \"' AND '\" + today + \"'; \"\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 500,
+        "wires": [
+            [
+                "8579dd6aa0184c76",
+                "a1a9b05202fd5c93"
+            ]
+        ]
+    },
+    {
+        "id": "8579dd6aa0184c76",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Get Avr Temps",
+        "x": 1080,
+        "y": 480,
+        "wires": [
+            [
+                "6283882e24dcb110",
+                "422cc9e0ab67c667"
+            ]
+        ]
+    },
+    {
+        "id": "6b221c03d6de89c0",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Crop Data",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "6283882e24dcb110",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "RelevantAVRTemps",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a1a9b05202fd5c93",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "GetAVRTemps",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "4da468faf314ec9a",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "Calculate GDD",
+        "func": "for (let cropID = 1; cropID < msg.payload[0].length + 1; cropID++)              // go through each crop\n{\n    var gdd = 0;\n\n    for (let day = 0; day < msg.payload[cropID].length; day++)              // for each day of average temperature readings\n    {\n        if (msg.payload[cropID][day].averageTemperature > msg.payload[0][cropID - 1].baselineTemp)      // if the avr temp was above the threshold\n        {\n        gdd =+ (msg.payload[cropID][day].averageTemperature - msg.payload[0][cropID-1].baselineTemp);   // add the average temp and take away the baseline\n        }\n    }\n\n    msg.payload[0][cropID - 1].accumulatedGDD = gdd;                        // after calculating the accumulatedGDD, change the value\n\n    msg.payload[0][cropID - 1].harvestPercent = (gdd / msg.payload[0][cropID - 1].harvestStartGDD) * 100; // calculate the harvest percent\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1460,
+        "y": 480,
+        "wires": [
+            [
+                "92ce2913628e8e24",
+                "efede7d7b022a67a"
+            ]
+        ]
+    },
+    {
+        "id": "92ce2913628e8e24",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Calculated GDD",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1660,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "5e8d845f6e0e0afc",
+        "type": "delay",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 340,
+        "y": 420,
+        "wires": [
+            [
+                "a27f6424ed7c5c30",
+                "c19c754b179e1a9b"
+            ]
+        ]
+    },
+    {
+        "id": "efede7d7b022a67a",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "msg.topic = \"\";\n\nfor (let i = 0; i < msg.payload[0].length; i++)              // go through each crop\n{\n    msg.topic += \"UPDATE crops SET accumulatedGDD ='\" + msg.payload[0][i].accumulatedGDD + \"' WHERE id = '\" + msg.payload[0][i].id + \"'; \"\n    msg.topic += \"UPDATE crops SET harvestPercent ='\" + msg.payload[0][i].harvestPercent + \"' WHERE id = '\" + msg.payload[0][i].id + \"'; \"\n}\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1650,
+        "y": 480,
+        "wires": [
+            [
+                "203fc23b2dd03bfc",
+                "5616bd23286504b9"
+            ]
+        ]
+    },
+    {
+        "id": "203fc23b2dd03bfc",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Store Crop GDD & Harvest%",
+        "x": 1880,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5616bd23286504b9",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Insert GDD SQL Command",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1860,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "422cc9e0ab67c667",
+        "type": "change",
+        "z": "589bf60c6071c122",
+        "name": "delete msg.topic",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1280,
+        "y": 480,
+        "wires": [
+            [
+                "4da468faf314ec9a"
+            ]
+        ]
+    },
+    {
+        "id": "c19c754b179e1a9b",
+        "type": "delay",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 520,
+        "y": 640,
+        "wires": [
+            [
+                "aa74cca59c978463"
+            ]
+        ]
+    },
+    {
+        "id": "aa74cca59c978463",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "SQL",
+        "func": "msg.topic = \"select cropName, datePlanted, accumulatedGDD, harvestStartGDD, harvestPercent from crops;\"\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 640,
+        "wires": [
+            [
+                "4336e4c71124993a"
+            ]
+        ]
+    },
+    {
+        "id": "4336e4c71124993a",
+        "type": "mysql",
+        "z": "589bf60c6071c122",
+        "mydb": "6d07263b338e4792",
+        "name": "Get Crops Data",
+        "x": 800,
+        "y": 640,
+        "wires": [
+            [
+                "a9c791517049b5f0",
+                "b9173fbb4fbc47d5"
+            ]
+        ]
+    },
+    {
+        "id": "a9c791517049b5f0",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Crop Data",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "d25aec2e26fa085a",
+        "type": "ui_table",
+        "z": "589bf60c6071c122",
+        "group": "7d54d0822a46d1ae",
+        "name": "Crops",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "columns": [
+            {
+                "field": "cropName",
+                "title": "Crop",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "datePlanted",
+                "title": "Date Planted",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "accumulatedGDD",
+                "title": "Accumulated GDDs",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "harvestStartGDD",
+                "title": "Harvest GDDs",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "harvestPercent",
+                "title": "Harvest Progress (%)",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1210,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "b9173fbb4fbc47d5",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "Date & % Formatting",
+        "func": "for (let i = 0; i < msg.payload.length; i++) \n{\n    msg.payload[i].datePlanted = msg.payload[i].datePlanted.toISOString().slice(0, 10);\n    msg.payload[i].harvestPercent = msg.payload[i].harvestPercent.toFixed(2) + \" %\";\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 640,
+        "wires": [
+            [
+                "d25aec2e26fa085a"
+            ]
+        ]
+    },
+    {
+        "id": "27faf0e1347b5e9f",
+        "type": "change",
+        "z": "589bf60c6071c122",
+        "name": "Humidity",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.uplink_message.decoded_payload.humidity",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 340,
+        "y": 260,
+        "wires": [
+            [
+                "dd597c7384b73b7b",
+                "deb683d20e3ba49a",
+                "7bbf67a1a6758711"
+            ]
+        ]
+    },
+    {
+        "id": "dd597c7384b73b7b",
+        "type": "debug",
+        "z": "589bf60c6071c122",
+        "name": "Humidity",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "deb683d20e3ba49a",
+        "type": "ui_gauge",
+        "z": "589bf60c6071c122",
+        "name": "Humidity",
+        "group": "98271c4b21a473a4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Humidity",
+        "label": "%",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "100",
+        "colors": [
+            "#0077b3",
+            "#ffffff",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 520,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "7bbf67a1a6758711",
+        "type": "link out",
+        "z": "589bf60c6071c122",
+        "name": "Humidity",
+        "mode": "link",
+        "links": [
+            "eddcb9238c6da70d",
+            "a0cbbaf1611642d4"
+        ],
+        "x": 445,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "eddcb9238c6da70d",
+        "type": "link in",
+        "z": "589bf60c6071c122",
+        "name": "Humidity",
+        "links": [
+            "7bbf67a1a6758711"
+        ],
+        "x": 65,
+        "y": 1240,
+        "wires": [
+            [
+                "16179d23946dc20d"
+            ]
+        ]
+    },
+    {
+        "id": "16179d23946dc20d",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "Turn on Watering Based on Humidity",
+        "func": "if(msg.payload < 50)                        // if the humidity is less than 50%\n{\n    msg.payload = Buffer.from([0x01]);      // Turn on the watering system\n}\nelse                                        // otherwise\n{\n    msg.payload = Buffer.from([0x00]);      // turn it off\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 1240,
+        "wires": [
+            [
+                "9c927e819ceba680",
+                "db94d17f710e142a"
+            ]
+        ]
+    },
+    {
+        "id": "db94d17f710e142a",
+        "type": "ui_switch",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "label": "Watering System",
+        "tooltip": "",
+        "group": "98271c4b21a473a4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "payload",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "[1]",
+        "onvalueType": "bin",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "[0]",
+        "offvalueType": "bin",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 290,
+        "y": 1320,
+        "wires": [
+            [
+                "01a07cd2ebc22cbf"
+            ]
+        ]
+    },
+    {
+        "id": "e50675d5d814095f",
+        "type": "link out",
+        "z": "589bf60c6071c122",
+        "name": "Temperature",
+        "mode": "link",
+        "links": [
+            "a0cbbaf1611642d4"
+        ],
+        "x": 465,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "0e133c9457e304ce",
+        "type": "mqtt out",
+        "z": "589bf60c6071c122",
+        "name": "TTN-MQTT-out",
+        "topic": "v3/iot-lab3-seanp@ttn/devices/mkr1310-test1/down/push",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ddc2d83757452bb6",
+        "x": 960,
+        "y": 1380,
+        "wires": []
+    },
+    {
+        "id": "8895d601f57b127e",
+        "type": "function",
+        "z": "589bf60c6071c122",
+        "name": "Turn Off Watering System",
+        "func": "return {\n    \"payload\": {\n        \"downlinks\": [{\n            \"f_port\": 1,\n            \"frm_payload\": 0,\n            \"priority\": \"NORMAL\"\n        }]\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 1380,
+        "wires": [
+            [
+                "0e133c9457e304ce"
+            ]
+        ]
+    },
+    {
+        "id": "8185d5f85ebb1def",
+        "type": "delay",
+        "z": "589bf60c6071c122",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "minutes",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 500,
+        "y": 1380,
+        "wires": [
+            [
+                "8895d601f57b127e"
+            ]
+        ]
+    },
+    {
+        "id": "ddc2d83757452bb6",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "eu1.cloud.thethings.network",
+        "port": "8883",
+        "tls": "",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "98271c4b21a473a4",
+        "type": "ui_group",
+        "name": "Temperature",
+        "tab": "b4751932e80ec6e0",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6d07263b338e4792",
+        "type": "MySQLdatabase",
+        "name": "Database",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "iot",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "fddeda23f38bd5a5",
+        "type": "ui_group",
+        "name": "Add Crop",
+        "tab": "d30c22ae94180fe8",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7d54d0822a46d1ae",
+        "type": "ui_group",
+        "name": "Crops",
+        "tab": "dade02c4b3242bdd",
+        "order": 1,
+        "disp": true,
+        "width": "15",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b4751932e80ec6e0",
+        "type": "ui_tab",
+        "name": "Live Temperature",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d30c22ae94180fe8",
+        "type": "ui_tab",
+        "name": "Add Crop",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "dade02c4b3242bdd",
+        "type": "ui_tab",
+        "name": "Monitor Crops",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
