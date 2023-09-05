@@ -141,7 +141,7 @@ For detailed instructions on setting up the Harvest Predictor, please refer to t
 
 ## <a name='Demonstration'></a>Demonstration
 
-[<img src="./Images/YouTube_Demo_Screenshot.png" />](https://youtu.be/MhM2F3PmK1o?si=OtK0RPwDWsCE3E0s)
+[<img src="https://github.com/SeanP2001/Harvest_Predictor/blob/main/Images/Youtube_Demo_Screenshot.png" />](https://youtu.be/MhM2F3PmK1o?si=OtK0RPwDWsCE3E0s)
 
 ## <a name='FurtherWork'></a>Further Work
 
